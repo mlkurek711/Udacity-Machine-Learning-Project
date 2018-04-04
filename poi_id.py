@@ -45,6 +45,8 @@ data_dict.pop('THE TRAVEL AGENCY IN THE PARK', 0)
 
 print("Number of data points in the dataset after removing 'TOTAl and THE TRAVEL AGENCY IN THE PARK': ", len(data_dict))
 
+data_dict.replace(to_replace="NaN", value=0, inplace=True)
+
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
