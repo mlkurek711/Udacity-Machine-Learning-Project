@@ -45,8 +45,10 @@ data_dict.pop('THE TRAVEL AGENCY IN THE PARK', 0)
 
 print("Number of data points in the dataset after removing 'TOTAl and THE TRAVEL AGENCY IN THE PARK': ", len(data_dict))
 
-data_dict.replace(to_replace="NaN", value=0, inplace=True)
-
+for k, v in data_dict.items():
+    if v is 'NaN':
+        data_dict[k] = 0
+     
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
@@ -88,8 +90,7 @@ skb = SelectKBest(k = 'all')
 #naive bayes
 clf = GaussianNB()
 clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
-clf.fit(features_train, labels_train)
-pred = clf.predict(features_test)
+
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -102,7 +103,8 @@ pred = clf.predict(features_test)
 from sklearn.cross_validation import train_test_split
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
-
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
