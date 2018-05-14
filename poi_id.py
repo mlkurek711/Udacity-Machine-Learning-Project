@@ -3,6 +3,7 @@
 import sys
 import pickle
 import numpy as np
+import pandas as pd
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
@@ -45,18 +46,17 @@ data_dict.pop('THE TRAVEL AGENCY IN THE PARK', 0)
 
 print("Number of data points in the dataset after removing 'TOTAl and THE TRAVEL AGENCY IN THE PARK': ", len(data_dict))
 
-for k, v in data_dict.items():
-    if v is 'NaN':
-        data_dict[k] = 0
-     
+  
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
 
 for person in my_dataset.values():
     bonus_to_salary_ratio = 0
-    if person['salary'] != 0:
+    if person['salary'] != 'NaN' and person['bonus'] != 'NaN':
         person["bonus_to_salary_ratio"] = float(person['bonus'])/float(person['salary'])
+    else: 
+        person['bonus_to_salary_ratio'] = 0
 
     person['to_poi_message_ratio'] = 0
     person['from_poi_message_ratio'] = 0
@@ -66,11 +66,11 @@ for person in my_dataset.values():
         person['from_poi_message_ratio'] = float(person['from_poi_to_this_person'])/float(person['to_messages'])
 
 features_list.extend(['bonus_to_salary_ratio', 'to_poi_message_ratio', 'from_poi_message_ratio'])
-
+my_dataset
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
-my_dataset
+
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
@@ -88,9 +88,13 @@ scaler = MinMaxScaler()
 skb = SelectKBest(k = 'all')
 
 #naive bayes
-clf = GaussianNB()
-clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
+#clf = GaussianNB()
+#clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
 
+#SVM
+from sklearn.svm import SVC
+clf = SVC(kernel = 'rbf')
+clf = Pipeline(steps=[('scaling',scaler),("SKB", skb), ("SVM", SVC())])
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -101,10 +105,13 @@ clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianN
 
 # Example starting point. Try investigating other evaluation techniques!
 from sklearn.cross_validation import train_test_split
+from sklearn.metrics import accuracy_score
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
 clf.fit(features_train, labels_train)
 pred = clf.predict(features_test)
+accuracy = accuracy_score(pred, labels_test)
+print('accuracy:', accuracy)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
