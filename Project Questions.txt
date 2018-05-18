@@ -1,0 +1,2 @@
+1.  The goal of this project was to use machine learning techniques to identify persons of interest in the Enron dataset based on different features.  There were 146 total data points orginally, but after removing a couple outliers 144 remained.    
+The data points 'TOTAL' and 'THE TRAVEL AGENCY IN THE PARK' were removed as they were rows in the spreadsheet and not actual names.

@@ -4,6 +4,7 @@ import sys
 import pickle
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
@@ -66,7 +67,7 @@ for person in my_dataset.values():
         person['from_poi_message_ratio'] = float(person['from_poi_to_this_person'])/float(person['to_messages'])
 
 features_list.extend(['bonus_to_salary_ratio', 'to_poi_message_ratio', 'from_poi_message_ratio'])
-my_dataset
+
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
@@ -92,9 +93,14 @@ skb = SelectKBest(k = 'all')
 #clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
 
 #SVM
-from sklearn.svm import SVC
-clf = SVC(kernel = 'rbf')
-clf = Pipeline(steps=[('scaling',scaler),("SKB", skb), ("SVM", SVC())])
+#from sklearn.svm import SVC
+#clf = SVC(kernel = 'kbf', C = 100)
+#clf = Pipeline(steps=[('scaling',scaler),("SKB", skb), ("SVM", SVC())])
+
+#decision tree
+from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(min_samples_split = 2)
+clf = clf.fit(features_train, labels_train)
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
