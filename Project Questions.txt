@@ -1,2 +1,13 @@
-1.  The goal of this project was to use machine learning techniques to identify persons of interest in the Enron dataset based on different features.  There were 146 total data points orginally, but after removing a couple outliers 144 remained.    
-The data points 'TOTAL' and 'THE TRAVEL AGENCY IN THE PARK' were removed as they were rows in the spreadsheet and not actual names.
+1.  The goal of this project was to use machine learning techniques to identify persons of interest (poi) in the Enron dataset based on different features.  The set of data and emails is rather large () which makes it difficult to sift through and analyze.  Using maching learning techniques we can create algorithms to help identify features that will help with the poi identification.  
+There were 146 total data points orginally, but after removing a couple outliers 144 remained.  The data points 'TOTAL' and 'THE TRAVEL AGENCY IN THE PARK' were removed as they were rows in the spreadsheet and not actual names.
+
+2. I created the feature bonus_to_salary ratio.  The rationale being the higher the ratio the more likely the person is a poi.
+
+3. I used a Decision Tree Clasifier which gave me an accuracy of 0.8604651162790697.  I tried Naive Bayes which gave a terrible accuracy of 0.3953488372093023 and a precision of 0.19118.  The recall for my Naive Bayes was very high at 0.78450 so it does not give very many false negatives.  My SVM had a good accuracy at 0.8837209302325582, but I could never get it to classify any true positives.
+
+4. I use a minimum sample split of 2 in my Decision Tree Clasifier.  Increasgin the min_samples_split significantly gave a slightly higher accuracy, the precision and recall tanked.  Not splitting the data enough returned too many falst negatives and false positives.
+
+5. Validation ensures that the machine learning algorithm classifies the data well so you can analyze the most accurate data.  Overfitting is a common mistake in machine learning where the algorithm tries tot hard to fit the data so although it does well with training data it loses it's effectiveness in the test data.  The project uses train/test split for validation on the data set.
+
+6.  My Decision Tree Classifier gave me an accuracy of 0.8604651162790697 with a minimum sample split of 2 (with a min_sample_split of 100 the accuracy improved to 0.8837209302325582 but the precion and recall tanked as discussed in the answer to question 3).  My precision was consistently over .305, but my recall would dip slightly below .3 (.2995, .2975) at times.  It does often return values above .3.  My classifier must return more false positives than false negatives to have that kind of inconsistency in my recall.
+

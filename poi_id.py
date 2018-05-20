@@ -93,7 +93,7 @@ skb = SelectKBest(k = 'all')
 #clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
 
 #SVM
-#from sklearn.svm import SVC
+from sklearn.svm import SVC
 #clf = SVC(kernel = 'kbf', C = 100)
 #clf = Pipeline(steps=[('scaling',scaler),("SKB", skb), ("SVM", SVC())])
 
