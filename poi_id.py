@@ -47,6 +47,12 @@ data_dict.pop('THE TRAVEL AGENCY IN THE PARK', 0)
 
 print("Number of data points in the dataset after removing 'TOTAl and THE TRAVEL AGENCY IN THE PARK': ", len(data_dict))
 
+count = 0
+for person in data_dict:
+    if data_dict[person]['poi'] == True:
+        count += 1
+print('Number of people that are pois: ', count)
+print('Percent of people that are pois: ', (count/len(data_dict))*100)
   
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
@@ -68,9 +74,13 @@ for person in my_dataset.values():
 
 features_list.extend(['bonus_to_salary_ratio', 'to_poi_message_ratio', 'from_poi_message_ratio'])
 
+print('Number of features:', len(features_list))
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
+from sklearn.cross_validation import train_test_split
+features_train, features_test, labels_train, labels_test = \
+    train_test_split(features, labels, test_size=0.3, random_state=42)
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
@@ -86,14 +96,18 @@ from sklearn.preprocessing import MinMaxScaler
 
 #scaling and feature_selection
 scaler = MinMaxScaler()
-skb = SelectKBest(k = 'all')
-
+skb = SelectKBest(k = 5)
+skb.fit_transform(features, labels)
+skb.scores_
+support = skb.get_support(indices=True)
+#for i, score in enumerate(skb.scores_):
+#    print(features_list[support[i+1]], score) 
 #naive bayes
 #clf = GaussianNB()
 #clf =  Pipeline(steps=[('scaling',scaler),("SKB", skb), ("NaiveBayes", GaussianNB())])
 
 #SVM
-from sklearn.svm import SVC
+#from sklearn.svm import SVC
 #clf = SVC(kernel = 'kbf', C = 100)
 #clf = Pipeline(steps=[('scaling',scaler),("SKB", skb), ("SVM", SVC())])
 
