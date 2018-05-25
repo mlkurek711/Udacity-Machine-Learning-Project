@@ -93,10 +93,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.feature_selection import SelectKBest
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.grid_search import GridSearchCV
 
 #scaling and feature_selection
 scaler = MinMaxScaler()
-skb = SelectKBest(k = 5)
+skb = SelectKBest(k = 15)
 skb.fit_transform(features, labels)
 skb.scores_
 support = skb.get_support(indices=True)
@@ -115,6 +116,7 @@ support = skb.get_support(indices=True)
 from sklearn.tree import DecisionTreeClassifier
 clf = DecisionTreeClassifier(min_samples_split = 2)
 clf = clf.fit(features_train, labels_train)
+clf = Pipeline(steps=[("SKB", skb), ('DecisionTreeClassifier', DecisionTreeClassifier())])
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
